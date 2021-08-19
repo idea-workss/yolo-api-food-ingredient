@@ -8,11 +8,16 @@ from PIL import Image
 import torch
 from flask import Flask, request
 
+import search_engine
+import json
+
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def home():
+    return "<h1>API</h1>"
+
 DETECTION_URL = "/api/yolov5sv1"
-
-
 @app.route(DETECTION_URL, methods=["POST"])
 def predict():
     if not request.method == "POST":
@@ -28,6 +33,16 @@ def predict():
         data = results.pandas().xyxy[0].to_json(orient="records")
         return data
 
+SEARCH_URL = "/api/search"
+@app.route(SEARCH_URL, methods=["POST"])
+def search():
+    if not request.method == "POST":
+        return "not post"
+    
+    query = request.form["query"]
+    result = search_engine.search(query)
+    
+    return result.to_json(orient="split")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Flask api exposing yolov5 model")
