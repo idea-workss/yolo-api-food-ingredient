@@ -19,4 +19,6 @@ tensorboard>=2.4.1
 seaborn>=0.11.0
 pandas
 
+gunicorn==20.1.0
+
 thop  # FLOPs computation
