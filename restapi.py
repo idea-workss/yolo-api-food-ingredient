@@ -11,6 +11,8 @@ from flask import Flask, request
 import search_engine
 import json
 
+import os
+
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
@@ -51,4 +53,7 @@ if __name__ == "__main__":
 
     model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
     model.eval()
-    app.run()  # debug=True causes Restarting with stat
+    
+    port = int(os.environ.get('PORT', 5000))
+    
+    app.run(host='0.0.0.0', port=port, debug=True)  # debug=True causes Restarting with stat

@@ -1,1 +1,1 @@
-web: gunicorn run:my_app
+web: gunicorn -b :$PORT restapi:app
