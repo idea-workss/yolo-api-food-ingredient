@@ -17,7 +17,7 @@ app = Flask(__name__)
 def home():
     return "<h1>API</h1>"
 
-DETECTION_URL = "/api/yolov5sv1"
+DETECTION_URL = "/api/yolovsv1"
 @app.route(DETECTION_URL, methods=["POST"])
 def predict():
     if not request.method == "POST":
@@ -49,8 +49,6 @@ if __name__ == "__main__":
     parser.add_argument("--port", default=5000, type=int, help="port number")
     args = parser.parse_args()
 
-    model = torch.hub.load(
-        "ultralytics/yolov5", "yolov5s", pretrained=True,
-    ).autoshape()  # force_reload = recache latest code
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
     model.eval()
     app.run()  # debug=True causes Restarting with stat
