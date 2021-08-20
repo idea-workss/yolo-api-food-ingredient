@@ -53,4 +53,4 @@ if __name__ == "__main__":
         "ultralytics/yolov5", "yolov5s", pretrained=True,
     ).autoshape()  # force_reload = recache latest code
     model.eval()
-    app.run(host="0.0.0.0", port=args.port)  # debug=True causes Restarting with stat
+    app.run()  # debug=True causes Restarting with stat
