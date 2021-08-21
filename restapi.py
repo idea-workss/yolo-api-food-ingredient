@@ -6,7 +6,7 @@ import io
 from PIL import Image
 
 import torch
-from flask import Flask, request
+from flask import Flask, request, Response
 
 import search_engine
 import json
@@ -34,7 +34,7 @@ def predict():
 
         results = model(img, size=640)
         data = results.pandas().xyxy[0].to_json(orient="records")
-        return data
+        return Response(data, mimetype='application/json')
 
 SEARCH_URL = "/api/search"
 @app.route(SEARCH_URL, methods=["POST"])
@@ -45,7 +45,7 @@ def search():
     query = request.form["query"]
     result = search_engine.search(query)
     
-    return result.to_json(orient="split")
+    return Response(result.to_json(orient="split"), mimetype='application/json')
 
 BENEFIT_URL = "/api/benefits"
 @app.route(BENEFIT_URL, methods=["POST"])
@@ -68,7 +68,7 @@ def benefits():
         if used_path == '':
             string = ["No Fruit Found"]
             
-            return json.dumps(string)
+            return Response(json.dumps(string), mimetype='application/json')
         else:
             # Read .txt
             with open(used_path) as f:
@@ -78,10 +78,10 @@ def benefits():
             for idx, string in enumerate(lines):
                 lines[idx] = string.replace("\n", '')
 
-            return json.dumps(lines)
+            return Response(json.dumps(lines), mimetype='application/json')
     else:
         string = ["No Request Found"]
-        return json.dumps(string)
+        return Response(json.dumps(string), mimetype='application/json')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Flask api exposing yolov5 model")
