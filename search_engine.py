@@ -75,6 +75,7 @@ def search_engine(querylist) :
 
     temp_index = [x for _,x in sorted(zip(rankdocs, index), reverse=True)]
     temp_rankdocs = np.sort(rankdocs)[::-1]
-    result = data.iloc[index, :]
+    new_index = [i - 1 for i in temp_index]
+    result = data.iloc[new_index, :]
        
     return result
