@@ -12,6 +12,7 @@ import search_engine
 import json
 
 import os
+import glob
 
 app = Flask(__name__)
 
@@ -19,7 +20,7 @@ app = Flask(__name__)
 def home():
     return "<h1>API</h1>"
 
-DETECTION_URL = "/api/yolovsv1"
+DETECTION_URL = "/api/yolov5v1"
 @app.route(DETECTION_URL, methods=["POST"])
 def predict():
     if not request.method == "POST":
@@ -45,6 +46,42 @@ def search():
     result = search_engine.search(query)
     
     return result.to_json(orient="split")
+
+BENEFIT_URL = "/api/benefits"
+@app.route(BENEFIT_URL, methods=["POST"])
+def benefits():
+    if not request.method == "POST":
+        return "use POST"
+
+    if request.form['fruit']:
+        input_fruit = request.form['fruit']
+        path_benefit = "benefits//"                                 # Path of Database
+        list_txt = glob.glob(os.path.join(path_benefit, '*.txt'))   # Get all of .txt data
+
+        # Eliminate the path to get the right .txt
+        used_path = ""
+        for idx, data in enumerate(list_txt):
+            if data.split("\\")[1].split(".")[0] == input_fruit:
+                used_path = used_path + list_txt[idx]
+                break
+
+        if used_path == '':
+            string = ["No Fruit Found"]
+            
+            return json.dumps(string)
+        else:
+            # Read .txt
+            with open(used_path) as f:
+                lines = f.readlines()
+
+            # Remove enter denotation
+            for idx, string in enumerate(lines):
+                lines[idx] = string.replace("\n", '')
+
+            return json.dumps(lines)
+    else:
+        string = ["No Request Found"]
+        return json.dumps(string)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Flask api exposing yolov5 model")
