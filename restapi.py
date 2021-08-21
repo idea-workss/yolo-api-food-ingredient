@@ -20,7 +20,7 @@ app = Flask(__name__)
 def home():
     return "<h1>API</h1>"
 
-DETECTION_URL = "/api/yolov5v1"
+DETECTION_URL = "/api/yolov5sv1"
 @app.route(DETECTION_URL, methods=["POST"])
 def predict():
     if not request.method == "POST":
@@ -66,7 +66,7 @@ def benefits():
                 break
 
         if used_path == '':
-            string = ["No Fruit Found"]
+            string = ["No Result Found"]
             
             return Response(json.dumps(string), mimetype='application/json')
         else:
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", default=5000, type=int, help="port number")
     args = parser.parse_args()
 
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best_yolov5m_20_epoch_12bs.pt')
     model.eval()
     
     port = int(os.environ.get('PORT', 5000))
