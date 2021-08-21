@@ -33,8 +33,12 @@ def predict():
         img = Image.open(io.BytesIO(image_bytes))
 
         results = model(img, size=640)
-        data = results.pandas().xyxy[0].to_json(orient="records")
-        return Response(data, mimetype='application/json')
+        data = results.pandas().xyxy[0]
+
+        if len(data) == 0:
+            return Response(json.dumps(["No Ingredients Detected"]), mimetype='application/json')
+        else:
+            return Response(data.to_json(orient="records"), mimetype='application/json')
 
 SEARCH_URL = "/api/search"
 @app.route(SEARCH_URL, methods=["POST"])
