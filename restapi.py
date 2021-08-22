@@ -32,7 +32,7 @@ def predict():
 
         img = Image.open(io.BytesIO(image_bytes))
 
-        results = model(img, size=640)
+        results = model(img, size=400)
         data = results.pandas().xyxy[0]
 
         if len(data) == 0:
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", default=5000, type=int, help="port number")
     args = parser.parse_args()
 
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best_yolov5m_20_epoch_12bs.pt')
+    model = torch.hub.load('Sekigahara/yolov5-medium-custom', 'custom', path='best_yolov5m_20_epoch_12bs.pt')
     model.eval()
     
     port = int(os.environ.get('PORT', 5000))
