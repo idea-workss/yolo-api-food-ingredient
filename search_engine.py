@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from nltk.stem import PorterStemmer
 import re
 import string
