@@ -6,7 +6,7 @@ import io
 from PIL import Image
 
 import torch
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 
 import search_engine
 import json
@@ -14,6 +14,10 @@ import json
 import os
 
 app = Flask(__name__)
+
+@app.route('/images/<path:path>')
+def getImages(path):
+    return send_from_directory("food_images", path)
 
 @app.route('/', methods=['GET'])
 def home():
