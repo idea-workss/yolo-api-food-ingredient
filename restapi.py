@@ -16,10 +16,6 @@ import glob
 
 app = Flask(__name__, static_folder='FoodImages', static_url_path='/api/resource/')
 
-@app.route('/images/<path:path>')
-def getImages(path):
-    return send_from_directory("food_images", path)
-
 @app.route('/', methods=['GET'])
 def home():
     return "<h1>API</h1>"
