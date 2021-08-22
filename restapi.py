@@ -13,6 +13,7 @@ import json
 
 import os
 import glob
+import cv2
 
 app = Flask(__name__, static_folder='FoodImages', static_url_path='/api/resource/')
 
@@ -27,7 +28,7 @@ def predict():
         return
 
     if request.files.get("image"):
-        image_file = request.files["image"]
+        image_file = cv2.imread(request.files["image"])
         image_bytes = image_file.read()
 
         img = Image.open(io.BytesIO(image_bytes))
