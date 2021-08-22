@@ -65,6 +65,7 @@ def benefits():
         # Eliminate the path to get the right .txt
         used_path = ""
         for idx, data in enumerate(list_txt):
+            return Response(json.dumps(data.split("\\")), mimetype='application/json')
             if data.split("\\")[1].split(".")[0] == input_fruit:
                 used_path = used_path + list_txt[idx]
                 break
