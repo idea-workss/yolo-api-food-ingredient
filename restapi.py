@@ -14,7 +14,7 @@ import json
 import os
 import glob
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='FoodImages', static_url_path='/api/resource/')
 
 @app.route('/', methods=['GET'])
 def home():
@@ -49,7 +49,7 @@ def search():
     query = request.form["query"]
     result = search_engine.search(query)
     
-    return Response(result.to_json(orient="split"), mimetype='application/json')
+    return Response(result.to_json(orient="records"), mimetype='application/json')
 
 BENEFIT_URL = "/api/benefits"
 @app.route(BENEFIT_URL, methods=["POST"])
