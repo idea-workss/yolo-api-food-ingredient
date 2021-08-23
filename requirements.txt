@@ -20,7 +20,6 @@ seaborn>=0.11.0
 pandas
 
 nltk
-Sastrawi
 
 gunicorn==20.1.0
 
