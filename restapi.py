@@ -44,6 +44,8 @@ def predict():
             multiplier = 10
             if mean_bright < 0.3:
                 multiplier = 30
+            if mean_bright < 0.2:
+                multiplier = 50
 
             brightness = np.ones(img.shape, dtype="uint8") * multiplier
             img = cv2.add(img, brightness)
