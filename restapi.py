@@ -34,11 +34,12 @@ def predict():
 
         img = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), 1)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        brightness = np.ones(img.shape, dtype="uint8") * 30
+        brightness = np.ones(img.shape, dtype="uint8") * 10
         img = cv2.add(img, brightness)
         #img = Image.open(io.BytesIO(image_bytes))
 
-        results = model(img, size=400)
+        model.conf = 0.1
+        results = model(img, size=312)
         data = results.pandas().xyxy[0]
 
         if len(data) == 0:
