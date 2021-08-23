@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from nltk.stem import PorterStemmer
 import re
 import string
@@ -22,7 +21,7 @@ def preprocessing_query(query) :
     rm_number = str.maketrans('', '', string.digits)
     query = query.translate(rm_number)
     #remove punctuations
-    rm_punctuations = str.maketrans('', '', string.punctuation)
+    rm_punctuations = str.maketrans(string.punctuation, ' '*len(string.punctuation))
     query = query.translate(rm_punctuations)
     #remove UNICODE characters
     query = query.encode("ascii", "ignore")
@@ -51,7 +50,7 @@ def preprocessing_query(query) :
         querylist.append(stemmer.stem(query_t))
 
     return querylist
-
+    
 def search_engine(querylist) :
     data = pd.read_csv("Food Ingredients and Recipe Dataset with Image Name Mapping.csv")
     data = data[data['Ingredients'].str.len() > 2]
