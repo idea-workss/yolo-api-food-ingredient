@@ -36,7 +36,7 @@ def predict():
         img = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), 1)
 
         # Find the brightness and saturation average
-        test_img = cv2.mean(cv2.cvtColor(img), cv2.COLOR_BGR2HSV)
+        test_img = cv2.mean(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
         mean_bright = test_img[2] / 255
         mean_satur = test_img[1] / 255
 
