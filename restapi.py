@@ -13,6 +13,8 @@ import json
 
 import os
 import glob
+import cv2
+import numpy as np
 
 app = Flask(__name__, static_folder='FoodImages', static_url_path='/api/resource/')
 
@@ -30,9 +32,38 @@ def predict():
         image_file = request.files["image"]
         image_bytes = image_file.read()
 
-        img = Image.open(io.BytesIO(image_bytes))
+        # Load with opencv
+        img = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), 1)
 
-        results = model(img, size=640)
+        # Find the brightness and saturation average
+        test_img = cv2.mean(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+        mean_bright = test_img[2] / 255
+        mean_satur = test_img[1] / 255
+
+        if mean_bright < 0.5:
+            multiplier = 10
+            if mean_bright < 0.3:
+                multiplier = 30
+
+            brightness = np.ones(img.shape, dtype="uint8") * multiplier
+            img = cv2.add(img, brightness)
+        if mean_bright > 0.5:
+            multiplier = 10
+            if mean_bright > 0.7:
+                multiplier = 30
+
+            brightness = np.ones(img.shape, dtype="uint8") * multiplier
+            img = cv2.subtract(img, brightness)
+            
+        #img = Image.open(io.BytesIO(image_bytes))
+
+        # Convert to PIL format
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = Image.fromarray(img)
+        img = np.asarray(img)
+
+        model.conf = 0.1
+        results = model(img, size=312)
         data = results.pandas().xyxy[0]
 
         if len(data) == 0:
@@ -65,7 +96,7 @@ def benefits():
         # Eliminate the path to get the right .txt
         used_path = ""
         for idx, data in enumerate(list_txt):
-            if data.split("\\")[1].split(".")[0] == input_fruit:
+            if data.split("/")[1].split(".")[0] == input_fruit:
                 used_path = used_path + list_txt[idx]
                 break
 
@@ -92,7 +123,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", default=5000, type=int, help="port number")
     args = parser.parse_args()
 
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best_yolov5m_20_epoch_12bs.pt')
+    model = torch.hub.load('Sekigahara/yolov5-medium-custom', 'custom', path='best_yolov5m_20_epoch_12bs.pt')
     model.eval()
     
     port = int(os.environ.get('PORT', 5000))
