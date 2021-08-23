@@ -35,14 +35,32 @@ def predict():
         # Load with opencv
         img = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), 1)
 
+        # Find the brightness and saturation average
+        test_img = cv2.mean(cv2.cvtColor(img), cv2.COLOR_BGR2HSV)
+        mean_bright = test_img[2] / 255
+        mean_satur = test_img[1] / 255
+
+        if mean_bright < 0.5:
+            multiplier = 10
+            if mean_bright < 0.3:
+                multiplier = 30
+
+            brightness = np.ones(img.shape, dtype="uint8") * multiplier
+            img = cv2.add(img, brightness)
+        if mean_bright > 0.5:
+            multiplier = 10
+            if mean_bright > 0.7:
+                multiplier = 30
+
+            brightness = np.ones(img.shape, dtype="uint8") * multiplier
+            img = cv2.subtract(img, brightness)
+            
+        #img = Image.open(io.BytesIO(image_bytes))
+
         # Convert to PIL format
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(img)
         img = np.asarray(img)
-
-        #brightness = np.ones(img.shape, dtype="uint8") * 10
-        #img = cv2.add(img, brightness)
-        #img = Image.open(io.BytesIO(image_bytes))
 
         model.conf = 0.1
         results = model(img, size=312)
