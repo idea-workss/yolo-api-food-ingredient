@@ -15,6 +15,7 @@ import os
 import glob
 import cv2
 import numpy as np
+import requests
 
 app = Flask(__name__, static_folder='FoodImages', static_url_path='/api/resource/')
 
@@ -83,6 +84,40 @@ def search():
     result = search_engine.search(query)
     
     return Response(result.to_json(orient="records"), mimetype='application/json')
+
+NUTRIENT_URL = "/api/nutrient"
+@app.route(NUTRIENT_URL, methods=["POST"])
+def nutrient():
+    if not request.method == "POST":
+        return "use post"
+    if request.form['fruit']:
+        fruit_name = request.form['fruit']
+
+        API_KEY = "E74bjXmRd32o8a5NYrQiFG3aJJ0BOoehTEM9jCZF"
+        URL = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + API_KEY
+        FINAL_URL = URL + "&query=" + fruit_name
+
+        response = requests.get(url=FINAL_URL)
+        whole_data = json.loads(response.text)
+        
+        if len(whole_data["foods"]) == 0:
+            return Response(json.dumps(["Unavailable Data"]), mimetype='application/json')
+        else:
+            nutrient_name = []
+            nutrient_value = []
+
+            # Get Data
+            nutrient = whole_data["foods"][0]["foodNutrients"]
+            print(nutrient)
+            for dictdata in nutrient:
+                nutrient_name.append(dictdata["nutrientName"])
+                nutrient_value.append(str(dictdata["nutrientNumber"] + "  " + dictdata["unitName"]))
+
+            # Zipping
+            data = json.dumps([{'nutrientName':nutrient_type, 'nutrientNumber':nutrient_number} for nutrient_type, nutrient_number in zip(nutrient_name, nutrient_value)])
+            
+            return Response(data, mimetype='application/json')
+            #return Response(json.dumps(nutrient), mimetype='application/json')
 
 BENEFIT_URL = "/api/benefits"
 @app.route(BENEFIT_URL, methods=["POST"])
