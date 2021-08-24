@@ -9,6 +9,9 @@ https://github.com/Sekigahara/ingredient-recognition-and-recipe-text-mining
 Custom Yolov5 Medium : 
 https://github.com/Sekigahara/yolov5-medium-custom
 
+Integrated Apps : 
+https://github.com/ilyasofficial1617/yolo-ingredient-recipe-app
+
 Supported Label (Yolov5) : 
 - Apple
 - Banana
