@@ -90,8 +90,8 @@ NUTRIENT_URL = "/api/nutrient"
 def nutrient():
     if not request.method == "POST":
         return "use post"
-    if request.form['fruit']:
-        fruit_name = request.form['fruit']
+    if request.form['cooking']:
+        fruit_name = request.form['cooking']
 
         API_KEY = "E74bjXmRd32o8a5NYrQiFG3aJJ0BOoehTEM9jCZF"
         URL = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + API_KEY
@@ -115,7 +115,7 @@ def nutrient():
 
             # Zipping
             data = json.dumps([{'nutrientName':nutrient_type, 'nutrientNumber':nutrient_number} for nutrient_type, nutrient_number in zip(nutrient_name, nutrient_value)])
-            
+
             return Response(data, mimetype='application/json')
             #return Response(json.dumps(nutrient), mimetype='application/json')
 
