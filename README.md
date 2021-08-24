@@ -36,9 +36,11 @@ Supported Label (Yolov5) :
 
 Dataset Source
 
-Fruit and Vegetable Image : \n
-https://www.kaggle.com/kritikseth/fruit-and-vegetable-image-recognition \n
-Recipe Data with Image : \n
-https://www.kaggle.com/pes12017000148/food-ingredients-and-recipe-dataset-with-images \n
-API for ingredients nutrition : \n
-https://fdc.nal.usda.gov/ \n
+Fruit and Vegetable Image : 
+https://www.kaggle.com/kritikseth/fruit-and-vegetable-image-recognition
+
+Recipe Data with Image : 
+https://www.kaggle.com/pes12017000148/food-ingredients-and-recipe-dataset-with-images 
+
+API for ingredients nutrition : 
+https://fdc.nal.usda.gov/ 
