@@ -3,6 +3,9 @@
 API Integration for Food Finder Apps.
 Containts of Search Engine, Trained Yolov5 Model and Brightness Average
 
+Software Potential analysis : 
+https://github.com/Sekigahara/fruit-consumption-analytics
+
 Prototype and Preparation for Yolo and Search Engine : 
 https://github.com/Sekigahara/ingredient-recognition-and-recipe-text-mining
 
