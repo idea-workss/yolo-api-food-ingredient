@@ -76,5 +76,9 @@ def search_engine(querylist) :
     temp_rankdocs = np.sort(rankdocs)[::-1]
     new_index = [i - 1 for i in temp_index]
     result = data.iloc[new_index, :]
-       
+    
+    #Andro minta return 15 max
+    if len(result) > 15 :
+        result = result[0:15]
+
     return result
